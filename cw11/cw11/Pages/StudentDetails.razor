@@ -1,0 +1,52 @@
+﻿@page "/students/{ID:int}"
+@inject IStudentService StudentService
+
+<h3>Student's Details</h3>
+
+
+
+        <label for="fname">First Name</label>
+        <input value="@StudentService.GetStudents().ToList().Where(s=> s.IdStudent == ID).FirstOrDefault().FirstName" disabled />
+
+        <label for="fname">First Name</label>
+
+        <input value="@StudentService.GetStudents().ToList().Where(s=> s.IdStudent == ID).FirstOrDefault().LastName" disabled />
+        <label for="fname">First Name</label>
+
+        <input value="@StudentService.GetStudents().ToList().Where(s=> s.IdStudent == ID).FirstOrDefault().BirthDate" disabled />
+        <label for="fname">First Name</label>
+
+        <input value="@StudentService.GetStudents().ToList().Where(s=> s.IdStudent == ID).FirstOrDefault().Studies" disabled />
+
+
+        <div>
+            <input value="@StudentService.GetStudents().ToList().Where(s=> s.IdStudent == ID).FirstOrDefault().Avatar" disabled />
+            <img src="@StudentService.GetStudents().ToList().Where(s=> s.IdStudent == ID).FirstOrDefault().Avatar" alt=" Avatar" />
+           
+        </div>
+
+
+
+
+
+<a class="btn btn-primary" href="/students" role="button">Return</a>
+
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+    [Parameter]
+    public string FirstNAME { get; set; }
+    [Parameter]
+    public string LastName { get; set; }
+    [Parameter]
+    public DateTime BirthDate { get; set; }
+    [Parameter]
+    public string Studies { get; set; }
+
+    [Parameter]
+    public string Avatar { get; set; }
+
+    [Parameter]
+    public string AvatarPhoto { get; set; }
+}

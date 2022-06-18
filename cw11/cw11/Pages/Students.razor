@@ -1,0 +1,114 @@
+﻿@page "/students" 
+@inject IStudentService StudentService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime js
+
+<h3>Students</h3>
+
+<table >
+    <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>
+                First name
+                <button @onclick="@(() => sortByName())">sort by Name</button>
+            </th>
+            <th>
+                Last name
+                <button @onclick="@(() => sortByLastName())">sort by Name</button>
+            </th>
+            <th>
+                Birthdate
+                <button @onclick="@(() => sortByBirthDay())">sort by Name</button>
+
+            </th>
+            <th>
+                Studies
+                <button @onclick="@(() => sortByStudies())">sort by Name</button>
+
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stud in StudentsList)
+        {
+        <tr>
+            <td><img src="@stud.Avatar" alt="@stud.FirstName @stud.LastName Avatar" /></td>
+            <td>@stud.FirstName
+              
+            </td>
+            
+            <td>
+                @stud.LastName
+                      
+
+                    </td>
+            <td>
+                @stud.BirthDate
+
+
+                    </td>
+            <td>
+                @stud.Studies
+
+                    </td>
+            <td>
+                <button  @onclick="@(() => OpenDetails(stud.IdStudent))">Open details</button>
+                <button style="color:red"  @onclick="@(() => Delete(stud.IdStudent))"/>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+    public IEnumerable<Student> StudentsList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        int maxLenght = 10;
+        if (StudentService.GetStudents().ToList().Count < 10)
+        {
+            StudentsList = StudentService.GetStudents();
+        }
+
+    }
+    private void sortByName()
+    {
+        StudentsList = StudentsList.OrderBy(s => s.FirstName);
+    }
+    private void sortByLastName()
+    {
+        StudentsList = StudentsList.OrderBy(s => s.LastName);
+    }
+    private void sortByBirthDay()
+    {
+        StudentsList = StudentsList.OrderBy(s => s.BirthDate);
+    }
+
+    private void sortByStudies()
+    {
+        StudentsList = StudentsList.OrderBy(s => s.Studies);
+    }
+    private void OpenDetails(int id)
+    {
+        NavigationManager.NavigateTo($"/students/{id}");
+       
+        
+    }
+
+
+    private async Task Delete(int id)
+    {
+        
+        if(await js.InvokeAsync<bool>("confirm", "Are you sure?"))
+        {
+            
+            StudentService.DeleteStudent(id);
+        }
+    }
+
+}
